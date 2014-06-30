@@ -33,7 +33,7 @@
          * @returns {core.fn}
          */
         core.fn.init = function (selector, dom, isSingle) {
-
+            this.debugStartTime = +new Date();
             var obj = (dom ) ? dom : document, nodeList;
             if (selector.nodeType === 1 || selector === window || selector === document) {
                 nodeList = [selector];
@@ -201,7 +201,7 @@
                     todo = ele.delegate[event + selector][i];
                     delete ele.delegate[ event + selector][i];
                     if (ele.detachEvent) {
-                        ele.detachEvent("on" + event, ele[event + selector + todo + (i+1)]);
+                        ele.detachEvent("on" + event, ele[event + selector + todo + (i + 1)]);
                         ele[event + selector + todo] = null;
                     } else {
                         ele.removeEventListener(event, todo, false);
@@ -937,12 +937,19 @@
 
         })();
 
-
-        core.fn.debug = function(){
-
+        /**
+         * 输出DEBUG
+         */
+        core.fn.debug = function () {
+            var msg = +new Date() - this.debugStartTime + "ms";
+            if (!core.browser.isIe()) {
+                console.info(msg);
+            }
+            return this;
         };
 
         core.fn.init.prototype = core.fn;
+
         return core;
 
     }());

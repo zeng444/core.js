@@ -233,7 +233,7 @@
          * @returns {*}
          */
         core.fn.attr = function (key, val) {
-            if (val) {
+            if (val !== undefined) {
                 core.each(this.selector, function (k, ele) {
                     ele.setAttribute(key, val);
                 });
@@ -263,7 +263,7 @@
          * @returns {*}
          */
         core.fn.css = function (css, val) {
-            if (val) {
+            if (val !== undefined) {
                 core.each(this.selector, function (key, ele) {
                     ele.style[css] = val;
                 });
@@ -307,6 +307,20 @@
                 }
             });
             return this;
+        };
+
+        core.fn.toggleClass = function (classname) {
+            
+        };
+
+        /**
+         * 检查选择器第一个是否包含指定CSS
+         * @param classname
+         * @returns {boolean}
+         */
+        core.fn.hasClass = function (classname) {
+            var regExp = new RegExp("(^|\\s)" + classname + "($|\\s)");
+            return regExp.test(this.selector[0].className);
         };
 
         /**
@@ -464,6 +478,13 @@
             return this;
         };
 
+        core.fn.after = function () {
+            return this;
+        };
+        core.fn.before = function () {
+            return this;
+        };
+
         /**
          * 删除选择器中全部节点
          */
@@ -477,9 +498,10 @@
         /**
          * 向选选择器中的节点传入或获得数据
          * @param string
+         * @returns {*}
          */
         core.fn.html = function (string) {
-            if (string) {
+            if (string !== undefined) {
                 core.each(this.selector, function (key, ele) {
                     ele.innerHTML = string;
                 });
@@ -487,7 +509,31 @@
             } else {
                 return  this.selector[0].innerHTML;
             }
+        };
 
+        /**
+         * 想选择器中的节点插入或者获得数据
+         * @param string
+         * @returns {*}
+         */
+        core.fn.text = function (string) {
+            if (string !== undefined) {
+                core.each(this.selector, function (key, ele) {
+                    ele.innerText = string;
+                });
+                return this;
+            } else {
+                return  this.selector[0].innerText;
+            }
+        };
+
+        /**
+         * 对匹配选择器进行清空操作
+         * @returns {core.fn}
+         */
+        core.fn.empty = function () {
+            this.html("");
+            return this;
         };
 
         //循环管理
@@ -500,6 +546,22 @@
             for (var key in object) {
                 callback(key, object[key]);
             }
+        };
+
+        /**
+         * 讲远程数据塞入到选择器对象中
+         * @param url
+         * @returns {core.fn}
+         */
+        core.fn.load = function (url, callback) {
+            var _this = this;
+            core.ajax.post(url, {}, function (string) {
+                _this.html(string);
+                if (callback) {
+                    callback();
+                }
+            });
+            return this;
         };
 
 

@@ -1,6 +1,6 @@
 /**
- * 依赖库文件
- * >=IE8
+ * 依赖文件
+ * @author robert zeng
  */
 (function (window, undefined) {
 

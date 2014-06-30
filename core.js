@@ -42,7 +42,7 @@
             } else if (typeof selector === "function") {
                 return core(document, undefined, undefined).ready(selector);
             }
-            this.selector = this[0] = ( isSingle ) ? [nodeList] : core._node2Arr(nodeList);
+            this.selector = this[0] = ( isSingle ) ? [nodeList] : core._node2arr(nodeList);
             this.length = this.size();
             return this;
         };
@@ -354,7 +354,7 @@
          * @param nodeList
          * @returns {Array}
          */
-        core._node2Arr = function (nodeList) {
+        core._node2arr = function (nodeList) {
             if (core.browser.isIe()) {
                 var i = 0, nodeArr = [];
                 for (; i < nodeList.length; i++) {
@@ -373,7 +373,7 @@
          * @returns {DocumentFragment}
          * @private
          */
-        core._html2oNodeList = function (html) {
+        core._html2nodeList = function (html) {
             var temp = document.createElement("div"),
                 frag = document.createDocumentFragment();
             temp.innerHTML = html;
@@ -440,7 +440,7 @@
          * @param html
          */
         core.fn.append = function (html) {
-            var frag = core._html2oNodeList(html);
+            var frag = core._html2nodeList(html);
             core.each(this.selector, function (key, ele) {
                 ele.appendChild(frag.cloneNode(true));
             });
@@ -452,7 +452,7 @@
          * @param html
          */
         core.fn.prepend = function (html) {
-            var frag = core._html2oNodeList(html);
+            var frag = core._html2nodeList(html);
             core.each(this.selector, function (key, ele) {
                 var htmlNode = frag.cloneNode(true);
                 if (ele.children.length === 0) {

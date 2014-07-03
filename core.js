@@ -310,7 +310,7 @@
         };
 
         core.fn.toggleClass = function (classname) {
-            
+
         };
 
         /**
@@ -478,10 +478,44 @@
             return this;
         };
 
-        core.fn.after = function () {
+        /**
+         * 像对象后面插入
+         * @param html
+         * @returns {core.fn}
+         */
+        core.fn.after = function (html) {
+            var frag = core._html2nodeList(html);
+            core.each(this.selector, function (key, ele) {
+                var eleNext, htmlNode = frag.cloneNode(true);
+                if (ele.parentNode.children.length < 2) {
+                    ele.parentNode.appendChild(htmlNode);
+                } else {
+                    eleNext = ele.nextSibling;
+                    while (eleNext !== null && eleNext.nodeType !== 1) {
+                        eleNext = eleNext.nextSibling;
+                    }
+                    if (eleNext === null) {
+                        ele.parentNode.appendChild(htmlNode);
+                    } else {
+                        ele.parentNode.insertBefore(htmlNode, ele);
+                    }
+
+                }
+            });
             return this;
         };
-        core.fn.before = function () {
+
+        /**
+         * 像对象前面
+         * @param html
+         * @returns {core.fn}
+         */
+        core.fn.before = function (html) {
+            var frag = core._html2nodeList(html);
+            core.each(this.selector, function (key, ele) {
+                var htmlNode = frag.cloneNode(true);
+                ele.parentNode.insertBefore(htmlNode, ele);
+            });
             return this;
         };
 

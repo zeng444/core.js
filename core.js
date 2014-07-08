@@ -99,10 +99,12 @@
          */
         core.fn.bind = function (event, callback) {
             core.each(this.selector, function (key, ele) {
-                if (!ele.events) {
-                    ele.events = {};
-                }
-                ele.events[event] = (ele.events[event]) ? ele.events[event] : [];
+                ele.events =  ele.events || {};
+//                if (!ele.events) {
+//                    ele.events = {};
+//                }
+//                ele.events[event] = (ele.events[event]) ? ele.events[event] : [];
+                ele.events[event] = ele.events[event] || [];
                 var handlers = ele.events[event],
                     todo = handlers[handlers.length] = callback;
                 if (ele.attachEvent) {
@@ -160,11 +162,12 @@
          */
         core.fn.delegate = function (selector, event, callback) {
             core.each(this.selector, function (key, ele) {
-                if (!ele.delegate) {
-                    ele.delegate = {};
-                }
-                ele.delegate[event + selector] = (ele.delegate[event + selector]) ? ele.delegate[event + selector] : [];
-
+                ele.delegate = ele.delegate || {};
+//                if (!ele.delegate) {
+//                    ele.delegate = {};
+//                }
+                ele.delegate[event + selector] =  ele.delegate[event + selector] || [];
+//                ele.delegate[event + selector] = (ele.delegate[event + selector]) ? ele.delegate[event + selector] : [];
                 var handlers = ele.delegate[event + selector],
                     todo = handlers[handlers.length] = function (e) {
                         e = e || window.event;
@@ -283,9 +286,12 @@
 
         };
 
+
         /**
          * 添加一组ClassName属性
+         *
          * @param classname
+         * @returns {core.fn}
          */
         core.fn.addClass = function (classname) {
             core.each(this.selector, function (key, ele) {
@@ -294,9 +300,12 @@
             return this;
         };
 
+
         /**
          * 删除一组CLass属性
+         *
          * @param classname
+         * @returns {core.fn}
          */
         core.fn.removeClass = function (classname) {
             var regExp = new RegExp("(^|\\s)" + classname + "($|\\s)"), _this = this;
@@ -310,6 +319,7 @@
         };
 
         core.fn.toggleClass = function (classname) {
+
 
         };
 
@@ -444,6 +454,7 @@
 
         /**
          * 获取取得的节点数
+         * @returns {Number}
          */
         core.fn.size = function () {
             return  this.selector.length;
@@ -452,6 +463,7 @@
         /**
          * 向对象内尾部插入元素
          * @param html
+         * @returns {core.fn}
          */
         core.fn.append = function (html) {
             var frag = core._html2nodeList(html);
@@ -464,6 +476,7 @@
         /**
          * 向对象头部插入元素
          * @param html
+         * @returns {core.fn}
          */
         core.fn.prepend = function (html) {
             var frag = core._html2nodeList(html);
@@ -521,6 +534,7 @@
 
         /**
          * 删除选择器中全部节点
+         * @returns {core.fn}
          */
         core.fn.remove = function () {
             core.each(this.selector, function (key, ele) {

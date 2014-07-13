@@ -99,7 +99,7 @@
          */
         core.fn.bind = function (event, callback) {
             core.each(this.selector, function (key, ele) {
-                ele.events =  ele.events || {};
+                ele.events = ele.events || {};
 //                if (!ele.events) {
 //                    ele.events = {};
 //                }
@@ -166,7 +166,7 @@
 //                if (!ele.delegate) {
 //                    ele.delegate = {};
 //                }
-                ele.delegate[event + selector] =  ele.delegate[event + selector] || [];
+                ele.delegate[event + selector] = ele.delegate[event + selector] || [];
 //                ele.delegate[event + selector] = (ele.delegate[event + selector]) ? ele.delegate[event + selector] : [];
                 var handlers = ele.delegate[event + selector],
                     todo = handlers[handlers.length] = function (e) {
@@ -958,51 +958,43 @@
          * @param time
          * @param callback
          */
-        core.fn.transition = function (params, time, callback) {
+        core.fn.transition = function (params, time, effect, callback) {
 
 
-            function string2hump(str) {
+            function _string2hump(str) {
                 return str.replace(/\-(\w)/g, function (all, letter) {
                     return letter.toUpperCase();
                 });
             }
 
-            function _transition(dom, params, time, callback) {
-
-                var effect, style, key;
+            function _transition(dom, params, time, effect, callback) {
+                callback = (typeof(effect) === "function") ? effect : callback;
+                effect = (typeof(effect) === "string") ? effect : undefined;
+                var style, key;
                 for (key in params) {
-                    dom.style[string2hump(key)] = params[key][0];
-                    effect = params[key][2];
+                    dom.style[_string2hump(key)] = params[key][0];
                 }
                 effect = ( effect ) ? effect : "linear";
-                // style = style.join(',');
                 style = "all " + time + "ms " + effect;
-
                 dom.style.WebkitTransition = style;
+                dom.style.mozTransition = style;
                 dom.style.transition = style;
-//                dom.style.mozTransition = style;
-//                dom.style.msTransition = style;
-
                 dom.focus();
                 for (key in params) {
-                    dom.style[string2hump(key)] = params[key][1];
+                    dom.style[_string2hump(key)] = params[key][1];
                 }
                 setTimeout(function () {
-
                     dom.style.WebkitTransition = "none";
+                    dom.style.msTransition = "none";
                     dom.style.transition = "none";
-//                    dom.style.mozTransition = "none";
-//                    dom.style.msTransition = "none";
-
                     if (callback) {
                         callback();
                     }
                 }, time + 20);
-
             }
 
             core.each(this.selector, function (k, dom) {
-                _transition(dom, params, time, callback);
+                _transition(dom, params, time, effect, callback);
             });
             return this;
         };
